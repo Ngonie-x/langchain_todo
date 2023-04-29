@@ -41,7 +41,6 @@ def add_demo_tasks(conn, cursor):
 
     # commit the changes and close the connection
     conn.commit()
-    close_connection(conn)
 
 
 def close_connection(conn):
