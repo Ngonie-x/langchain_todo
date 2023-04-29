@@ -24,7 +24,7 @@ close_connection(conn)
 
 # Setup
 open_db = SQLDatabase.from_uri(
-    "sqlite:///C:\\Users\\ngoni\\OneDrive\\Documents\\Python_Scripts\\lang_todo\\todo.db"
+    "sqlite:///todo.db",
 )
 
 # setup llm
