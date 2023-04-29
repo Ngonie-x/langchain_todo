@@ -58,8 +58,11 @@ def get_prompt():
             print('Exiting...')
             break
         else:
-            question = _DEFAULT_TEMPLATE.format(question=prompt)
-            print(db_chain.run(question))
+            try:
+                question = _DEFAULT_TEMPLATE.format(question=prompt)
+                print(db_chain.run(question))
+            except Exception as e:
+                print(e)
 
 
 get_prompt()
