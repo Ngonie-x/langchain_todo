@@ -1,8 +1,6 @@
 from langchain import OpenAI, SQLDatabase, SQLDatabaseChain
 from langchain.prompts.prompt import PromptTemplate
 
-from db import initialize_connection, create_todo_table, add_demo_tasks, close_connection
-
 # Setting up the api key
 import environ
 env = environ.Env()
@@ -10,21 +8,9 @@ environ.Env.read_env()
 
 API_KEY = env('apikey')
 
-# initialize db connection
-conn, cursor = initialize_connection()
-
-# Create the table
-create_todo_table(cursor)
-
-# Add demo tasks
-add_demo_tasks(conn, cursor)
-
-# Close connection to the database
-close_connection(conn)
-
 # Setup
 open_db = SQLDatabase.from_uri(
-    "sqlite:///todo.db",
+    f"postgresql+psycopg2://postgres:{env('dbpass')}\@localhost/tasks",
 )
 
 # setup llm
