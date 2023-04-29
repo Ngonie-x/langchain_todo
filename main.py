@@ -10,7 +10,7 @@ API_KEY = env('apikey')
 
 # Setup
 open_db = SQLDatabase.from_uri(
-    f"postgresql+psycopg2://postgres:{env('dbpass')}\@localhost/tasks",
+    f"postgresql+psycopg2://postgres:{env('dbpass')}@localhost:5433/tasks",
 )
 
 # setup llm
@@ -19,7 +19,7 @@ llm = OpenAI(temperature=0, openai_api_key=API_KEY)
 # Create db chain
 
 _DEFAULT_TEMPLATE = """
-Given an input question, first create a syntactically correct sqlite3 query to run, then look at the results of the query and return the answer.
+Given an input question, first create a syntactically correct postgresql query to run, then look at the results of the query and return the answer.
 Use the following format:
 
 Question: "Question here"
