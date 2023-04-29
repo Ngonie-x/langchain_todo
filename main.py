@@ -1,5 +1,4 @@
 from langchain import OpenAI, SQLDatabase, SQLDatabaseChain
-from langchain.prompts.prompt import PromptTemplate
 
 # Setting up the api key
 import environ
@@ -8,8 +7,8 @@ environ.Env.read_env()
 
 API_KEY = env('apikey')
 
-# Setup
-open_db = SQLDatabase.from_uri(
+# Setup database
+db = SQLDatabase.from_uri(
     f"postgresql+psycopg2://postgres:{env('dbpass')}@localhost:5433/tasks",
 )
 
@@ -18,7 +17,7 @@ llm = OpenAI(temperature=0, openai_api_key=API_KEY)
 
 # Create db chain
 
-_DEFAULT_TEMPLATE = """
+QUERY = """
 Given an input question, first create a syntactically correct postgresql query to run, then look at the results of the query and return the answer.
 Use the following format:
 
@@ -30,8 +29,8 @@ Answer: "Final answer here"
 {question}
 """
 
-
-db_chain = SQLDatabaseChain(llm=llm, database=open_db, verbose=True)
+# Setup the database chain
+db_chain = SQLDatabaseChain(llm=llm, database=db, verbose=True)
 
 
 def get_prompt():
@@ -45,7 +44,7 @@ def get_prompt():
             break
         else:
             try:
-                question = _DEFAULT_TEMPLATE.format(question=prompt)
+                question = QUERY.format(question=prompt)
                 print(db_chain.run(question))
             except Exception as e:
                 print(e)
